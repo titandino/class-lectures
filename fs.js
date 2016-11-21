@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 
+const wayOne = false;
+
 function readAll(files, callback) {
   let data_arr = [];
   let finished = 0;
@@ -15,28 +17,22 @@ function readAll(files, callback) {
   }
 }
 
-let curr1 = (new Date()).getTime();
-readAll(['one', 'two', 'three', 'four', 'five'], function(data) {
-  for (let i = 0;i < data.length;i++) {
-    console.log(data[i].toString());
-  }
-  console.log('Finished reading all files in ' + ((new Date()).getTime() - curr1) + 'ms');
-});
-
-// let curr2 = (new Date()).getTime();
-// fs.readFile('one.txt', function(err, data) {
-//   console.log(data.toString());
-//   fs.readFile('two.txt', function(err, data) {
-//     console.log(data.toString());
-//     fs.readFile('three.txt', function(err, data) {
-//       console.log(data.toString());
-//       fs.readFile('four.txt', function(err, data) {
-//         console.log(data.toString());
-//         fs.readFile('five.txt', function(err, data) {
-//           console.log(data.toString());
-//           console.log('Finished reading all files in ' + ((new Date()).getTime() - curr2) + 'ms');
-//         });
-//       });
-//     });
-//   });
-// });
+if (wayOne) {
+  let curr1 = (new Date()).getTime();
+  readAll(['one', 'two', 'three', 'four', 'five'], function(data) {
+    console.log('Finished reading all files in ' + ((new Date()).getTime() - curr1) + ' milliseconds using Trent\'s way');
+  });
+} else {
+  let curr2 = (new Date()).getTime();
+  fs.readFile('one.txt', function(err, data) {
+    fs.readFile('two.txt', function(err, data) {
+      fs.readFile('three.txt', function(err, data) {
+        fs.readFile('four.txt', function(err, data) {
+          fs.readFile('five.txt', function(err, data) {
+            console.log('Finished reading all files in ' + ((new Date()).getTime() - curr2) + ' milliseconds using promise/chain callback way');
+          });
+        });
+      });
+    });
+  });
+}
