@@ -14,67 +14,67 @@ ByteStream.prototype.readByte = function() {
 };
 
 ByteStream.prototype.readUByte = function() {
-  return this.buffer[this.index++] & 0xff;
+  return this.readByte() & 0xff;
 };
 
 ByteStream.prototype.writeShort = function(x) {
-  this.buffer[this.index++] = x << 8;
+  this.buffer[this.index++] = x >> 8;
   this.buffer[this.index++] = x;
 };
 
 ByteStream.prototype.readShort = function() {
-  return this.buffer[this.index++] + this.buffer[this.index++] << 8;
+  return this.readByte() + this.readByte() << 8;
 };
 
 ByteStream.prototype.readUShort = function() {
-  return (this.buffer[this.index++] + this.buffer[this.index++] << 8) & 0xFFFF;
+  return this.readUByte() + this.readUByte() << 8;
 };
 
 ByteStream.prototype.writeInt = function(x) {
-  this.buffer[this.index++] = x << 16;
-  this.buffer[this.index++] = x << 8;
-  this.buffer[this.index++] = x;
+  this.writeByte(x >> 24);
+  this.writeByte(x >> 16);
+  this.writeByte(x >> 8);
+  this.writeByte(x);
 };
 
 ByteStream.prototype.readInt = function() {
-  return this.buffer[this.index++] + this.buffer[this.index++] >> 8 + this.buffer[this.index++] >> 16;
+  return this.readByte() + this.readByte() << 8 + this.readByte() << 16 + this.readByte() << 24;
 };
 
 ByteStream.prototype.readUInt = function() {
-  return (this.buffer[this.index++] + this.buffer[this.index++] >> 8 + this.buffer[this.index++] >> 16) & 0xFFFFFF;
+  return this.readUByte() + this.readUByte() << 8 + this.readUByte() << 16 + this.readUByte() << 24;
 };
 
 ByteStream.prototype.writeLong = function(x) {
-  this.buffer[this.index++] = x << 32;
-  this.buffer[this.index++] = x << 24;
-  this.buffer[this.index++] = x << 16;
-  this.buffer[this.index++] = x << 8;
-  this.buffer[this.index++] = x;
+  this.writeByte(x >> 56);
+  this.writeByte(x >> 48);
+  this.writeByte(x >> 40);
+  this.writeByte(x >> 32);
+  this.writeByte(x >> 24);
+  this.writeByte(x >> 16);
+  this.writeByte(x >> 8);
+  this.writeByte(x);
 };
 
 ByteStream.prototype.readLong = function() {
-  return this.buffer[this.index++] + this.buffer[this.index++] >> 8 + this.buffer[this.index++] >> 16 + this.buffer[this.index++] >> 24 + this.buffer[this.index++] >> 32;
+  return this.readByte() + this.readByte() << 8 + this.readByte() << 16 + this.readByte() << 24 + this.readByte() << 32 + this.readByte() << 40 + this.readByte() << 48 + this.readByte() << 56;
 };
 
 ByteStream.prototype.readULong = function() {
-  return (this.buffer[this.index++] + this.buffer[this.index++] >> 8 + this.buffer[this.index++] >> 16 + this.buffer[this.index++] >> 24 + this.buffer[this.index++] >> 32) & 0xFFFFFFFFFF;
+  return this.readUByte() + this.readUByte() << 8 + this.readUByte() << 16 + this.readUByte() << 24 + this.readUByte() << 32 + this.readUByte() << 40 + this.readUByte() << 48 + this.readUByte() << 56;
 };
 
 ByteStream.prototype.writeString = function(str) {
   for (let i = 0;i < str.length;i++) {
-    this.buffer[this.index++] = str[i];
+    this.writeShort(str[i]);
   }
-  this.buffer[this.index++] = '\n';
+  this.writeByte(10);
 };
 
 ByteStream.prototype.readString = function() {
   let str = '';
   while(this.buffer[this.index] != 10) {
-    str += String.fromCharCode(this.buffer[this.index++]);
+    str += String.fromCharCode(this.readShort());
   }
   return str;
-};
-
-ByteStream.prototype.writeFloat = function(x) {
-  
 };
