@@ -1,30 +1,36 @@
-function Node(val, next) {
+'use strict';
+
+function Node(val, prev) {
   this.val = val;
-  this.next = next;
+  this.prev = prev;
 }
 
 function Queue() {
-  this.curr = null;
+  this.head = null;
   this.tail = null;
 }
 
 Queue.prototype.enqueue = function(val) {
-  if (this.curr) {
-    this.curr.next = new Node(val);
-    this.curr = this.curr.next;
+  let node = new Node(val);
+  if (!this.head) {
+    this.head = this.tail = node;
   } else {
-    this.curr = new Node(val);
-  }
-  if (!this.tail) {
-    this.tail = this.curr;
+    this.tail.prev = node;
+    this.tail = node;
   }
 };
 
 Queue.prototype.dequeue = function() {
-  if (!this.tail) {
-    throw new Error('No tail present in queue.');
-  }
-  let val = this.tail.val;
-  this.tail = this.tail.next;
-  return val;
+  let temp = this.head.val;
+  this.head = this.head.prev;
+  return temp;
 };
+
+let q = new Queue();
+q.enqueue(10);
+q.enqueue(20);
+q.enqueue(30);
+console.log(q);
+console.log(q.dequeue());
+console.log(q.dequeue());
+console.log(q.dequeue());
