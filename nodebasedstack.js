@@ -12,9 +12,10 @@ function Stack(maxSize) {
 };
 
 Stack.prototype.push = function(val) {
-  if (this.maxSize && this.length++ >= this.maxSize) {
+  if (this.maxSize && this.length >= this.maxSize) {
     throw new Error('Stack overflow.');
   }
+  this.length++;
   this.curr = new Node(val, this.curr);
 };
 
