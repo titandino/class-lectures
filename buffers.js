@@ -64,6 +64,14 @@ ByteStream.prototype.readULong = function() {
   return this.readUByte() + this.readUByte() << 8 + this.readUByte() << 16 + this.readUByte() << 24 + this.readUByte() << 32 + this.readUByte() << 40 + this.readUByte() << 48 + this.readUByte() << 56;
 };
 
+ByteStream.prototype.write36BitLong = function(x) {
+  this.writeByte(x >> 32);
+  this.writeByte(x >> 24);
+  this.writeByte(x >> 16);
+  this.writeByte(x >> 8);
+  this.writeByte(x);
+};
+
 ByteStream.prototype.writeString = function(str) {
   for (let i = 0;i < str.length;i++) {
     this.writeShort(str[i]);
