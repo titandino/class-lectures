@@ -30,18 +30,3 @@ Queue.prototype.dequeue = function() {
     return this.dequeueStack.pop();
   }
 };
-
-let queue = new Queue();
-
-queue.enqueue(5);
-queue.enqueue(12);
-queue.enqueue(3);
-queue.enqueue(5);
-queue.enqueue(15);
-console.log(queue.dequeue());
-console.log(queue.dequeue());
-queue.enqueue(50);
-console.log(queue.dequeue());
-console.log(queue.dequeue());
-console.log(queue.dequeue());
-console.log(queue.dequeue());
