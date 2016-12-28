@@ -1,6 +1,6 @@
 'use strict';
 
-let Stack = require('./stack');
+let Stack = require('./nodebasedstack');
 
 function Queue() {
   this.enqueueStack = new Stack();
@@ -11,7 +11,8 @@ Queue.prototype.enqueue = function(value) {
   if (this.dequeueStack.length <= 0) {
     this.enqueueStack.push(value);
   } else {
-    for (let i = 0;i < this.dequeueStack.length;i++) {
+    let len = this.dequeueStack.length;
+    for (let i = 0;i < len;i++) {
       this.enqueueStack.push(this.dequeueStack.pop());
     }
     this.enqueueStack.push(value);
@@ -22,9 +23,25 @@ Queue.prototype.dequeue = function() {
   if (this.enqueueStack.length <= 0) {
     return this.dequeueStack.pop();
   } else {
-    for (let i = 0;i < this.enqueueStack.length;i++) {
+    let len = this.enqueueStack.length;
+    for (let i = 0;i < len;i++) {
       this.dequeueStack.push(this.enqueueStack.pop());
     }
-    this.dequeueStack.pop();
+    return this.dequeueStack.pop();
   }
 };
+
+let queue = new Queue();
+
+queue.enqueue(5);
+queue.enqueue(12);
+queue.enqueue(3);
+queue.enqueue(5);
+queue.enqueue(15);
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+queue.enqueue(50);
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
